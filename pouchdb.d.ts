@@ -1,7 +1,7 @@
 // Type definitions for pouchdb v3.4.0
 // Project: http://pouchdb.com/, https://github.com/pouchdb/pouchdb
 // Definitions by: Andy Brown <https://github.com/AGBrown> (https://github.com/AGBrown/pouchdb.d.ts), Frederico Galvão <https://github.com/fredgalvao>
-// Definitions: https://github.com/borisyankov/DefinitelyTyped
+// Definitions: https://github.com/borisyankov/DefinitelyTyped, Juan C. Andreu <https://github.com/andreujuanc> (https://github.com/andreujuanc/pouchdb.d.ts)
 
 //  Progress: up to http://pouchdb.com/api.html#fetch_document
 //            in v3.4.0 test.basic.js on line 210
@@ -271,7 +271,7 @@ declare module pouchdb {
                 value: {
                     _rev: string;
                     deleted?: boolean;
-                    sum?:number;
+                    sum?: number;
                     count?: number;
                     min?: number;
                     max?: number;
@@ -1117,7 +1117,7 @@ declare module pouchdb {
                     key?: string;
                 }
 
-                interface MapReduce{
+                interface MapReduce {
                     map?(doc: DocContainer<ExistingDoc>);
                     map?(doc: ExistingDoc): void;
                     /**
@@ -1165,10 +1165,18 @@ declare module pouchdb {
             module replicate {
                 module from {
                     interface Callback {
-                        from(instance: PouchInstance,  callback: async.Callback<Response>): void;
+                        from(instance: PouchInstance, callback: async.Callback<Response>): void;
                     }
                     interface Promisable {
-                        from(instance: PouchInstance):async.PouchPromise<Response>;
+                        from(instance: PouchInstance): async.PouchPromise<Response>;
+                    }
+                }
+                module to {
+                    interface Callback {
+                        to(instance: PouchInstance, callback: async.Callback<Response>): void;
+                    }
+                    interface Promisable {
+                        to(instance: PouchInstance): async.PouchPromise<Response>;
                     }
                 }
             }
@@ -1213,6 +1221,10 @@ declare module pouchdb {
                     methods.replicate.from.Callback { }
                 export interface Promisable extends
                     methods.replicate.from.Promisable { }
+                export interface Callback extends
+                    methods.replicate.to.Callback { }
+                export interface Promisable extends
+                    methods.replicate.to.Promisable { }
             }
 
         }
