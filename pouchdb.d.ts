@@ -672,6 +672,7 @@ declare module pouchdb {
                      * `changes()` that returned this object
                      */
                     cancel(): void;
+                    on(name, callback): void;
                 }
                 /** The overloads for changes() */
                 interface Overloads {
@@ -1168,7 +1169,7 @@ declare module pouchdb {
                         from(instance: PouchInstance, callback: async.Callback<Response>): void;
                     }
                     interface Promisable {
-                        from(instance: PouchInstance): async.PouchPromise<Response>;
+                        from(instance: PouchInstance, options?: ReplicationOptions): async.PouchPromise<Response>;
                     }
                 }
                 module to {
@@ -1176,9 +1177,16 @@ declare module pouchdb {
                         to(instance: PouchInstance, callback: async.Callback<Response>): void;
                     }
                     interface Promisable {
-                        to(instance: PouchInstance): async.PouchPromise<Response>;
+                        to(instance: PouchInstance, options?: ReplicationOptions): async.PouchPromise<Response>;
                     }
                 }
+
+                interface ReplicationOptions {
+                    live: boolean;
+                    retry: boolean;
+                }
+
+
             }
 
         }
