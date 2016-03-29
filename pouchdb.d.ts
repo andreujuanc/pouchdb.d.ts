@@ -672,7 +672,7 @@ declare module pouchdb {
                      * `changes()` that returned this object
                      */
                     cancel(): void;
-                    on(name, callback): void;
+                    on(eventName, callback): void;
                 }
                 /** The overloads for changes() */
                 interface Overloads {
@@ -1169,24 +1169,21 @@ declare module pouchdb {
                         from(instance: PouchInstance, callback: async.Callback<Response>): void;
                     }
                     interface Promisable {
-                        from(instance: PouchInstance, options?: ReplicationOptions): async.PouchPromise<Response>;
+                        from(instance: PouchInstance, options: ReplicateOptions): async.PouchPromise<Response>;
                     }
-                }
+                }// I HAVE NO IDEA WHAT IM DOING!!
                 module to {
                     interface Callback {
                         to(instance: PouchInstance, callback: async.Callback<Response>): void;
                     }
                     interface Promisable {
-                        to(instance: PouchInstance, options?: ReplicationOptions): async.PouchPromise<Response>;
+                        to(instance: PouchInstance, options: ReplicateOptions): async.PouchPromise<Response>;
                     }
                 }
-
-                interface ReplicationOptions {
+                interface ReplicateOptions {
                     live: boolean;
                     retry: boolean;
                 }
-
-
             }
 
         }
