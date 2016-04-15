@@ -268,15 +268,8 @@ declare module pouchdb {
                 /** The document key */
                 key: string;
                 /** @todo not sure what this is */
-                value: {
-                    _rev: string;
-                    deleted?: boolean;
-                    sum?: number;
-                    count?: number;
-                    min?: number;
-                    max?: number;
-                    sumsqr?: number;
-                }
+                /* result */
+                value: any
             }
 
             /** Response object for `allDocs()` and `query()` */
@@ -1113,8 +1106,8 @@ declare module pouchdb {
                 interface QueryOptions {
                     reduce: boolean;
                     include_docs?: boolean;
-                    startkey?: string;
-                    endkey?: string;
+                    startkey?: string[];
+                    endkey?: string[];
                     key?: string;
                 }
 
@@ -1159,7 +1152,7 @@ declare module pouchdb {
                      * @param queryFun
                      * @options options options that specify
                      */
-                    query(queryFun: MapReduce, options?: QueryOptions): async.PouchPromise<Response>;
+                    query(queryFun:string, options?: QueryOptions): async.PouchPromise<Response>;
 
                 }
             }
@@ -1183,9 +1176,47 @@ declare module pouchdb {
                 interface ReplicateOptions {
                     live: boolean;
                     retry: boolean;
+                    since?: string;
                 }
             }
 
+           
+
+            module login {
+                interface Callback {
+                    login(username: string, password: string, options?: any, callback?: async.Callback<any>): void;
+                } 
+                interface Promisable {
+                    login(username: string, password: string, options?: any): async.PouchPromise<any>;
+                }
+            }
+
+            module signup {
+                interface Callback {
+                    signup(username: string, password: string, options?: any, callback?: async.Callback<any>): void;
+                }
+                interface Promisable {
+                    signup(username: string, password: string, options?: any): async.PouchPromise<any>;
+                }
+            }
+
+            module logout {
+                interface Callback {
+                    logout(callback?: async.Callback<any>): void;
+                }
+                interface Promisable {
+                    logout(): async.PouchPromise<any>;
+                }
+            }
+
+            module getSession {
+                interface Callback {
+                    getSession(options: any, callback: async.Callback<any>): void;
+                }
+                interface Promisable {
+                    getSession(options?: any): async.PouchPromise<any>;
+                }
+            }
         }
         /** Contains the main callback/promise apis for pouchdb */
         module db {
@@ -1203,7 +1234,12 @@ declare module pouchdb {
                 , methods.post.Callback
                 , methods.put.Callback
                 , methods.remove.Callback
-                , methods.query.Callback { }
+                , methods.query.Callback
+                , methods.login.Callback
+                , methods.logout.Callback
+                , methods.signup.Callback
+                , methods.getSession.Callback
+                { }
             /** pouchDB api: promise based */
             interface Promisable extends
                 PouchInstance
@@ -1218,7 +1254,12 @@ declare module pouchdb {
                 , methods.post.Promisable
                 , methods.put.Promisable
                 , methods.remove.Promisable
-                , methods.query.Promisable { }
+                , methods.query.Promisable
+                , methods.login.Promisable
+                , methods.logout.Promisable
+                , methods.signup.Promisable
+                , methods.getSession.Promisable
+                { }
 
             module replicate {
 
@@ -1365,6 +1406,7 @@ declare module pouchdb {
     export interface PouchDB {
         /** Error helpers */
         Errors: api.StandardErrors;
+        sync(src: any, target: any, options: any): any;
     }
     /**
      * The main pouchDB entry point. The constructors here will return either a
